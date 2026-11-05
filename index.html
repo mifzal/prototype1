@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Kampus - Manga Pixel Edition v3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Press+Start+2P&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* ===== TYPOGRAPHY SYSTEM ===== */
+        .font-pixel { font-family: 'Press Start 2P', cursive; }
+        .font-manga { font-family: 'Bangers', cursive; letter-spacing: 1.5px; }
+        .font-body { font-family: 'Nunito', sans-serif; }
+        
+        /* ===== BASE STYLES ===== */
+        body {
+            background: #e8e8e8;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(0,0,0,0.03) 20px, rgba(0,0,0,0.03) 21px);
+        }
+        
+        /* ===== PIXEL BORDER SYSTEM ===== */
+        .pixel-box {
+            border: 4px solid #000;
+            box-shadow: 6px 6px 0px #000;
+            background: #fff;
+            position: relative;
+        }
+        
+        .pixel-box-thin {
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px #000;
+        }
+        
+        /* ===== MANGA BUTTON ===== */
+        .manga-btn {
+            background: #ffbe0b;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px #000;
+            font-family: 'Bangers', cursive;
+            font-size: 16px;
+            letter-spacing: 1.5px;
+            transition: all 0.1s;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 48px;
+            padding: 12px 16px;
+        }
+        
+        .manga-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #000;
+        }
+        
+        .manga-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #000;
+        }
+        
+        /* ===== PIXEL BADGE ===== */
+        .pixel-badge {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 9px;
+            padding: 6px 10px;
+            border: 2px solid #000;
+            display: inline-block;
+            line-height: 1.4;
+        }
+        
+        /* ===== PIXEL CHECKBOX ===== */
+        .pixel-checkbox {
+            width: 28px;
+            height: 28px;
+            border: 3px solid #000;
+            background: #fff;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .pixel-checkbox:checked {
+            background: #00ff88;
+        }
+        
+        .pixel-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        /* ===== PIXEL SLIDER ===== */
+        .pixel-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 20px;
+            background: #fff;
+            border: 3px solid #000;
+            outline: none;
+        }
+        
+        .pixel-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 28px;
+            height: 28px;
+            background: #ff006e;
+            border: 3px solid #000;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px #000;
+        }
+        
+        /* ===== FOCUS INDICATORS ===== */
+        .focus-pixel:focus {
+            outline: 4px dashed #ff006e;
+            outline-offset: 3px;
+        }
+        
+        .focus-pixel-thick:focus {
+            outline: 6px solid #ff006e;
+            outline-offset: 3px;
+        }
+        
+        /* ===== HIGH CONTRAST MODE ===== */
+        .high-contrast {
+            background: #000 !important;
+            color: #0f0 !important;
+        }
+        
+        .high-contrast .pixel-box,
+        .high-contrast .pixel-box-thin {
+            border-color: #0f0 !important;
+            box-shadow: 6px 6px 0px #0f0 !important;
+            background: #000 !important;
+            color: #0f0 !important;
+        }
+        
+        .high-contrast .text-black,
+        .high-contrast .text-gray-900,
+        .high-contrast .text-gray-700,
+        .high-contrast .text-gray-600 {
+            color: #0f0 !important;
+        }
+        
+        .high-contrast .bg-white,
+        .high-contrast .bg-gray-50,
+        .high-contrast .bg-green-50,
+        .high-contrast .bg-blue-50,
+        .high-contrast .bg-yellow-50 {
+            background: #000 !important;
+        }
+        
+        .high-contrast .manga-btn {
+            background: #0f0 !important;
+            color: #000 !important;
+        }
+        
+        /* ===== FONT SCALING ===== */
+        .font-scale-125 { font-size: 125%; }
+        .font-scale-150 { font-size: 150%; }
+        .font-scale-175 { font-size: 175%; }
+        .font-scale-200 { font-size: 200%; }
+        
+        /* ===== REDUCE MOTION ===== */
+        .reduce-motion * {
+            animation: none !important;
+            transition: none !important;
+        }
+        
+        /* ===== FAB (FLOATING ACTION BUTTON) ===== */
+        .fab-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+        }
+        
+        .fab-button {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #ff006e;
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0px #000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: transform 0.2s;
+        }
+        
+        .fab-button:hover { transform: scale(1.1); }
+        .fab-button:active { transform: scale(0.95); box-shadow: 2px 2px 0px #000; }
+        
+        /* ===== ACCESSIBILITY PANEL ===== */
+        .accessibility-panel {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 300px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #fff;
+            border: 4px solid #000;
+            box-shadow: 6px 6px 0px #000;
+            padding: 16px;
+            display: none;
+        }
+        
+        .accessibility-panel.open { display: block; }
+        
+        /* ===== JADWAL CARD LAYOUT ===== */
+        .jadwal-card {
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0px #000;
+            background: #fff;
+            padding: 16px;
+            position: relative;
+            min-height: 140px;
+        }
+        
+        .jadwal-card .status-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+        }
+        
+        .jadwal-card .card-content {
+            display: grid;
+            grid-template-columns: 60px 1fr;
+            gap: 12px;
+            align-items: start;
+            padding-right: 120px; /* Space for badge */
+        }
+        
+        .jadwal-card .time-block {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 9px;
+            line-height: 1.6;
+            color: #374151;
+        }
+        
+        .jadwal-card .info-block h3 {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            font-size: 18px;
+            line-height: 1.3;
+            margin-bottom: 4px;
+            color: #000;
+        }
+        
+        .jadwal-card .info-block .dosen {
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            color: #4b5563;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .jadwal-card .info-block .ruang {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 9px;
+            color: #000;
+        }
+        
+        /* ===== TTS STATUS ===== */
+        .tts-status {
+            padding: 8px 10px;
+            border: 3px solid #000;
+            background: #f0f0f0;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 9px;
+            line-height: 1.5;
+            margin-top: 8px;
+        }
+        
+        .tts-status.speaking { background: #90EE90; border-color: #00aa00; }
+        .tts-status.error { background: #FFB6C1; border-color: #cc0000; }
+        
+        /* ===== PIXEL SELECT ===== */
+        .pixel-select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 3px solid #000;
+            background: #fff;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            min-height: 44px;
+        }
+        
+        .pixel-select:focus {
+            outline: 4px dashed #ff006e;
+            outline-offset: 2px;
+        }
+        
+        /* ===== SECTION DIVIDER ===== */
+        .section-divider {
+            border-top: 4px solid #000;
+            margin: 16px 0;
+            padding-top: 16px;
+        }
+        
+        .section-label {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 9px;
+            background: #000;
+            color: #fff;
+            padding: 6px 10px;
+            display: inline-block;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        
+        /* ===== PROGRESS BAR PIXEL ===== */
+        .progress-bar-container {
+            width: 100%;
+            background: #fff;
+            border: 3px solid #000;
+            height: 28px;
+            position: relative;
+            margin-top: 6px;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .progress-bar-label {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 9px;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        /* ===== SCREEN READER ONLY ===== */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* ===== ANIMATIONS ===== */
+        @keyframes bounce-pixel {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        
+        .tts-speaking-anim {
+            animation: bounce-pixel 0.5s infinite;
+        }
+    </style>
+</head>
+<body class="font-body" id="body">
+
+    <!-- Skip Navigation -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:bg-black focus:text-white focus:px-4 focus:py-2 focus:z-50 focus-pixel" tabindex="0">
+        ⏭️ Lewati ke konten utama
+    </a>
+
+    <!-- ===== HEADER ===== -->
+    <header class="bg-blue-600 pixel-box mb-6" role="banner">
+        <div class="max-w-4xl mx-auto px-4 py-5">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="font-manga text-4xl md:text-5xl text-white" style="text-shadow: 3px 3px 0px #000;">
+                        PORTAL KAMPUS
+                    </h1>
+                    <span class="pixel-badge bg-black text-white mt-2">UIN SUKA ★ 2026/2027</span>
+                </div>
+                <div class="flex items-center gap-3 bg-white pixel-box-thin p-3">
+                    <div class="w-10 h-10 bg-blue-400 pixel-box-thin flex items-center justify-center text-sm font-bold" aria-hidden="true">ME</div>
+                    <div>
+                        <p class="font-bold text-sm">Mifzal Eko Nugroho</p>
+                        <p class="font-pixel text-xs text-gray-600">NIM: 26106050006</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="max-w-4xl mx-auto px-4 mb-6" role="navigation" aria-label="Navigasi utama">
+        <ul class="flex flex-wrap gap-2" role="menubar">
+            <li role="none">
+                <a href="#dashboard" class="manga-btn bg-yellow-400 touch-target focus-pixel" role="menuitem" aria-current="page">
+                    🏠 BERANDA
+                </a>
+            </li>
+            <li role="none">
+                <a href="#jadwal" class="manga-btn bg-cyan-400 touch-target focus-pixel" role="menuitem">
+                    📅 JADWAL
+                </a>
+            </li>
+            <li role="none">
+                <a href="#presensi" class="manga-btn bg-green-400 touch-target focus-pixel" role="menuitem">
+                    ✓ PRESENSI
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main id="main-content" class="max-w-4xl mx-auto px-4 py-6 pb-32" role="main">
+        
+        <!-- DASHBOARD SECTION -->
+        <section id="dashboard" class="mb-8" aria-labelledby="dashboard-heading">
+            <h2 id="dashboard-heading" class="font-manga text-4xl text-black mb-4" style="text-shadow: 2px 2px 0px rgba(0,0,0,0.2);">
+                ★ DASHBOARD AKADEMIK
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Semester Card -->
+                <div class="pixel-box p-4" role="region" aria-label="Semester aktif: 1 Ganjil">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="pixel-badge bg-blue-400">SEMESTER</span>
+                        <span class="text-3xl" aria-hidden="true">📚</span>
+                    </div>
+                    <p class="text-sm text-gray-600 font-bold mb-1">Semester Aktif</p>
+                    <p class="font-manga text-3xl text-blue-600">1 (Ganjil)</p>
+                    <p class="font-pixel text-xs text-gray-600 mt-2">TA 2026/2027</p>
+                </div>
+                
+                <!-- SKS Card -->
+                <div class="pixel-box p-4" role="region" aria-label="Total SKS: 20">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="pixel-badge bg-green-400">SKS</span>
+                        <span class="text-3xl" aria-hidden="true">📝</span>
+                    </div>
+                    <p class="text-sm text-gray-600 font-bold mb-1">Total SKS Diambil</p>
+                    <p class="font-manga text-3xl text-green-600">20 SKS</p>
+                    <p class="font-pixel text-xs text-gray-600 mt-2">6 MATKUL</p>
+                </div>
+                
+                <!-- IPK Card -->
+                <div class="pixel-box p-4" role="region" aria-label="IPK belum tersedia">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="pixel-badge bg-yellow-400">IPK</span>
+                        <span class="text-3xl" aria-hidden="true">🎯</span>
+                    </div>
+                    <p class="text-sm text-gray-600 font-bold mb-1">IPK Kumulatif</p>
+                    <p class="font-manga text-3xl text-yellow-600">-</p>
+                    <p class="font-pixel text-xs text-gray-600 mt-2">BELUM ADA</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- JADWAL SECTION -->
+        <section id="jadwal" class="mb-8" aria-labelledby="jadwal-heading">
+            <h2 id="jadwal-heading" class="font-manga text-4xl text-black mb-4" style="text-shadow: 2px 2px 0px rgba(0,0,0,0.2);">
+                📅 JADWAL KULIAH HARI INI
+            </h2>
+            
+            <div class="space-y-4">
+                <!-- Jadwal 1: Selesai -->
+                <article class="jadwal-card bg-green-50" aria-label="Perancangan Algoritma, selesai">
+                    <div class="status-badge">
+                        <span class="pixel-badge bg-green-400">✓ SELESAI</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="time-block">
+                            <p>07:00</p>
+                            <p>09:10</p>
+                        </div>
+                        <div class="info-block">
+                            <h3>Perancangan Algoritma</h3>
+                            <p class="dosen">Muhammad Galih Wonoseto, M.T.</p>
+                            <p class="ruang">📍 RUANG: R. 301</p>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Jadwal 2: Berlangsung -->
+                <article class="jadwal-card bg-blue-50" aria-label="Matematika Diskrit, sedang berlangsung">
+                    <div class="status-badge">
+                        <span class="pixel-badge bg-blue-400">⏰ BERLANGSUNG</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="time-block">
+                            <p>10:40</p>
+                            <p>12:20</p>
+                        </div>
+                        <div class="info-block">
+                            <h3>Matematika Diskrit</h3>
+                            <p class="dosen">Ir. Maria Ulfah Siregar, S.Kom., MIT., Ph.D.</p>
+                            <p class="ruang">📍 RUANG: R. 205</p>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Jadwal 3: Belum Dimulai -->
+                <article class="jadwal-card bg-gray-50" aria-label="Bahasa Indonesia, belum dimulai">
+                    <div class="status-badge">
+                        <span class="pixel-badge bg-gray-400">⏳ BELUM DIMULAI</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="time-block">
+                            <p>13:30</p>
+                            <p>16:00</p>
+                        </div>
+                        <div class="info-block">
+                            <h3>Bahasa Indonesia</h3>
+                            <p class="dosen">Nia Maharani Raharja, M.Eng.</p>
+                            <p class="ruang">📍 RUANG: R. 102</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- PRESENSI SECTION -->
+        <section id="presensi" class="mb-8" aria-labelledby="presensi-heading">
+            <h2 id="presensi-heading" class="font-manga text-4xl text-black mb-4" style="text-shadow: 2px 2px 0px rgba(0,0,0,0.2);">
+                ✓ PRESENSI KULIAH
+            </h2>
+            
+            <div class="pixel-box p-5">
+                <h3 class="font-bold text-lg mb-4">Rekap Presensi Semester Ini</h3>
+                
+                <div class="space-y-4 mb-6">
+                    <!-- Kehadiran -->
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-sm">Kehadiran</span>
+                            <span class="font-pixel text-xs">85% (17/20)</span>
+                        </div>
+                        <div class="progress-bar-container" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" aria-label="Kehadiran 85 persen">
+                            <div class="progress-bar-fill bg-green-400" style="width: 85%"></div>
+                            <div class="progress-bar-label">85%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Izin -->
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-sm">Izin</span>
+                            <span class="font-pixel text-xs">10% (2/20)</span>
+                        </div>
+                        <div class="progress-bar-container" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" aria-label="Izin 10 persen">
+                            <div class="progress-bar-fill bg-yellow-400" style="width: 10%"></div>
+                            <div class="progress-bar-label">10%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tidak Hadir -->
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-sm">Tidak Hadir</span>
+                            <span class="font-pixel text-xs">5% (1/20)</span>
+                        </div>
+                        <div class="progress-bar-container" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" aria-label="Tidak hadir 5 persen">
+                            <div class="progress-bar-fill bg-red-400" style="width: 5%"></div>
+                            <div class="progress-bar-label">5%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="section-divider">
+                    <h4 class="font-bold text-base mb-3">Presensi Hari Ini</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <button class="manga-btn bg-green-400 w-full focus-pixel" aria-label="Konfirmasi kehadiran">
+                            <span class="text-xl">✓</span>
+                            <span>KONFIRMASI HADIR</span>
+                        </button>
+                        <button class="manga-btn bg-yellow-400 w-full focus-pixel" aria-label="Ajukan izin">
+                            <span class="text-xl">⚠</span>
+                            <span>AJUKAN IZIN</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="bg-black text-white pixel-box mt-8" role="contentinfo">
+        <div class="max-w-4xl mx-auto px-4 py-6 text-center">
+            <p class="font-manga text-2xl mb-2">PORTAL KAMPUS INKLUSIF</p>
+            <p class="font-pixel text-xs">UIN SUNAN KALIJAGA ★ 2026</p>
+            <p class="font-pixel text-xs mt-3 text-gray-400">WCAG 2.1 AA + EDGE TTS ♿</p>
+        </div>
+    </footer>
+
+    <!-- ===== FLOATING ACCESSIBILITY BUTTON ===== -->
+    <div class="fab-container">
+        <!-- Panel Aksesibilitas -->
+        <div class="accessibility-panel" id="accessibility-panel" role="dialog" aria-label="Panel Aksesibilitas" aria-modal="true">
+            
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-3 pb-3" style="border-bottom: 3px solid #000;">
+                <h3 class="font-manga text-xl flex items-center gap-2">
+                    <span>⚙️</span> AKSESIBILITAS
+                </h3>
+                <button id="close-panel" class="pixel-badge bg-black text-white focus-pixel" aria-label="Tutup panel">✕</button>
+            </div>
+
+            <!-- VISUAL SECTION -->
+            <div class="mb-4">
+                <span class="section-label">🎨 VISUAL</span>
+                
+                <div class="space-y-3">
+                    <!-- Kontras Tinggi -->
+                    <label class="flex items-center gap-3 cursor-pointer touch-target">
+                        <input type="checkbox" id="high-contrast-toggle" class="pixel-checkbox focus-pixel" aria-label="Kontras tinggi">
+                        <div class="flex-1">
+                            <span class="font-bold text-sm block">Kontras Tinggi</span>
+                            <span class="font-pixel text-xs text-gray-600">MODE MALAM 🌙</span>
+                        </div>
+                    </label>
+                    
+                    <!-- Ukuran Font -->
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="font-bold text-sm" for="font-size-slider">Ukuran Font</label>
+                            <span class="pixel-badge bg-black text-white" id="font-size-value">100%</span>
+                        </div>
+                        <input type="range" id="font-size-slider" min="100" max="200" step="25" value="100" class="pixel-slider focus-pixel" aria-label="Ukuran font">
+                        <div class="flex justify-between font-pixel text-xs mt-1 text-gray-600">
+                            <span>KECIL</span><span>BESAR</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Fokus Tebal -->
+                    <label class="flex items-center gap-3 cursor-pointer touch-target">
+                        <input type="checkbox" id="focus-thick-toggle" class="pixel-checkbox focus-pixel" aria-label="Fokus tebal">
+                        <div class="flex-1">
+                            <span class="font-bold text-sm block">Fokus Tebal</span>
+                            <span class="font-pixel text-xs text-gray-600">KEYBOARD NAV ⌨️</span>
+                        </div>
+                    </label>
+                    
+                    <!-- Kurangi Animasi -->
+                    <label class="flex items-center gap-3 cursor-pointer touch-target">
+                        <input type="checkbox" id="reduce-motion-toggle" class="pixel-checkbox focus-pixel" aria-label="Kurangi animasi">
+                        <div class="flex-1">
+                            <span class="font-bold text-sm block">Kurangi Animasi</span>
+                            <span class="font-pixel text-xs text-gray-600">NO MOTION 🎬</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- EDGE TTS SECTION -->
+            <div class="section-divider">
+                <span class="section-label">🔊 EDGE TTS</span>
+                
+                <div class="space-y-3">
+                    <!-- Voice Select -->
+                    <div>
+                        <label class="font-bold text-sm block mb-1" for="tts-voice-select">Pilih Suara:</label>
+                        <select id="tts-voice-select" class="pixel-select focus-pixel" aria-label="Pilih suara">
+                            <option value="id-ID-GadisNeural">👩 Gadis (Perempuan)</option>
+                            <option value="id-ID-ArdiNeural">👨 Ardi (Laki-laki)</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Rate Slider -->
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="font-bold text-sm" for="tts-rate-slider">Kecepatan</label>
+                            <span class="pixel-badge bg-black text-white" id="tts-rate-value">1.0x</span>
+                        </div>
+                        <input type="range" id="tts-rate-slider" min="0.5" max="2" step="0.1" value="1" class="pixel-slider focus-pixel" aria-label="Kecepatan suara">
+                    </div>
+                    
+                    <!-- TTS Buttons -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <button id="tts-read-page" class="manga-btn bg-cyan-400 text-xs focus-pixel" aria-label="Bacakan halaman">
+                            📖 BACA HALAMAN
+                        </button>
+                        <button id="tts-read-focus" class="manga-btn bg-pink-400 text-xs focus-pixel" aria-label="Baca fokus">
+                            🎯 BACA FOKUS
+                        </button>
+                    </div>
+                    
+                    <button id="tts-stop" class="manga-btn bg-red-400 w-full focus-pixel" aria-label="Stop TTS">
+                        ⏹️ STOP
+                    </button>
+                    
+                    <!-- Status -->
+                    <div id="tts-status" class="tts-status" role="status" aria-live="polite">
+                        💤 IDLE
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reset -->
+            <button id="reset-accessibility" class="manga-btn w-full mt-3 focus-pixel" aria-label="Reset default">
+                🔄 RESET DEFAULT
+            </button>
+        </div>
+
+        <!-- FAB Button -->
+        <button id="fab-toggle" class="fab-button touch-target focus-pixel" aria-label="Buka panel aksesibilitas" aria-expanded="false" aria-controls="accessibility-panel">
+            ♿
+        </button>
+    </div>
+
+    <!-- Live Announcer -->
+    <div id="live-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+    <script>
+    // ===== EDGE TTS CLASS =====
+    class EdgeTTS {
+        constructor() {
+            this.ws = null;
+            this.connected = false;
+            this.speaking = false;
+            this.audioContext = null;
+            this.currentVoice = 'id-ID-GadisNeural';
+            this.onStatusChange = null;
+            this.trustedToken = '6A5AA1D4EAFF4E9FB37E23D68491D6F4';
+        }
+
+        generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        async connect(voice) {
+            if (voice) this.currentVoice = voice;
+            
+            return new Promise((resolve, reject) => {
+                try {
+                    const connectionId = this.generateUUID();
+                    const url = `wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=${this.trustedToken}&ConnectionId=${connectionId}`;
+                    
+                    this.ws = new WebSocket(url);
+                    
+                    this.ws.onopen = () => {
+                        const config = {
+                            context: {
+                                synthesis: {
+                                    audio: {
+                                        metadataoptions: { sentenceBoundaryEnabled: false, wordBoundaryEnabled: true },
+                                        outputFormat: 'audio-24khz-48kbitrate-mono-mp3'
+                                    }
+                                }
+                            }
+                        };
+                        this.ws.send(`X-Timestamp:${new Date().toString()}\r\nContent-Type:application/json; charset=utf-8\r\nPath:speech.config\r\n\r\n${JSON.stringify(config)}`);
+                        this.connected = true;
+                        resolve();
+                    };
+
+                    this.ws.onmessage = (event) => {
+                        if (typeof event.data === 'string') {
+                            const headers = event.data.split('\r\n\r\n')[0];
+                            if (headers.includes('Path:turn.start')) {
+                                this.speaking = true;
+                                if (this.onStatusChange) this.onStatusChange('speaking', '🔊 SEDANG MEMBACA...');
+                            } else if (headers.includes('Path:turn.end')) {
+                                this.speaking = false;
+                                if (this.onStatusChange) this.onStatusChange('idle', '💤 SELESAI');
+                            }
+                        } else if (event.data instanceof ArrayBuffer) {
+                            this.playAudioChunk(event.data);
+                        }
+                    };
+
+                    this.ws.onerror = (error) => {
+                        this.connected = false;
+                        if (this.onStatusChange) this.onStatusChange('error', '❌ ERROR: ' + error.message);
+                        reject(error);
+                    };
+
+                    this.ws.onclose = () => {
+                        this.connected = false;
+                        this.speaking = false;
+                    };
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        }
+
+        async playAudioChunk(arrayBuffer) {
+            try {
+                if (!this.audioContext) {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer.slice(0));
+                const source = this.audioContext.createBufferSource();
+                source.buffer = audioBuffer;
+                source.connect(this.audioContext.destination);
+                source.start(0);
+            } catch (e) {
+                console.warn('Audio decode error:', e);
+            }
+        }
+
+        async speak(text, rate = 1.0) {
+            if (!this.connected) {
+                await this.connect(this.currentVoice);
+            }
+
+            const escapedText = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            const rateValue = rate.toFixed(1);
+            
+            const ssml = `<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='id-ID'>
+                <voice name='${this.currentVoice}'>
+                    <prosody rate='${rateValue}x'>${escapedText}</prosody>
+                </voice>
+            </speak>`;
+
+            const path = `X-RequestId:${this.generateUUID()}\r\nContent-Type:application/ssml+xml\r\nX-Timestamp:${new Date().toString()}\r\nPath:ssml\r\n\r\n${ssml}`;
+            this.ws.send(path);
+            
+            if (this.onStatusChange) this.onStatusChange('speaking', '🔊 MEMBACAKAN...');
+        }
+
+        stop() {
+            if (this.ws && this.connected) {
+                this.ws.close();
+                this.connected = false;
+                this.speaking = false;
+            }
+            if (this.audioContext) {
+                this.audioContext.close();
+                this.audioContext = null;
+            }
+            if (this.onStatusChange) this.onStatusChange('idle', '⏹️ DIHENTIKAN');
+        }
+    }
+
+    // ===== MAIN APP =====
+    document.addEventListener('DOMContentLoaded', function() {
+        const body = document.getElementById('body');
+        const fabToggle = document.getElementById('fab-toggle');
+        const panel = document.getElementById('accessibility-panel');
+        const closePanel = document.getElementById('close-panel');
+        const liveAnnouncer = document.getElementById('live-announcer');
+        
+        const highContrastToggle = document.getElementById('high-contrast-toggle');
+        const fontSizeSlider = document.getElementById('font-size-slider');
+        const fontSizeValue = document.getElementById('font-size-value');
+        const focusThickToggle = document.getElementById('focus-thick-toggle');
+        const reduceMotionToggle = document.getElementById('reduce-motion-toggle');
+        const resetButton = document.getElementById('reset-accessibility');
+        
+        const ttsVoiceSelect = document.getElementById('tts-voice-select');
+        const ttsRateSlider = document.getElementById('tts-rate-slider');
+        const ttsRateValue = document.getElementById('tts-rate-value');
+        const ttsReadPage = document.getElementById('tts-read-page');
+        const ttsReadFocus = document.getElementById('tts-read-focus');
+        const ttsStop = document.getElementById('tts-stop');
+        const ttsStatus = document.getElementById('tts-status');
+        
+        const edgeTTS = new EdgeTTS();
+        
+        edgeTTS.onStatusChange = (state, message) => {
+            ttsStatus.textContent = message;
+            ttsStatus.className = 'tts-status';
+            if (state === 'speaking') {
+                ttsStatus.classList.add('speaking');
+                fabToggle.classList.add('tts-speaking-anim');
+            } else if (state === 'error') {
+                ttsStatus.classList.add('error');
+                fabToggle.classList.remove('tts-speaking-anim');
+            } else {
+                fabToggle.classList.remove('tts-speaking-anim');
+            }
+        };
+
+        function announce(message) {
+            liveAnnouncer.textContent = '';
+            setTimeout(() => { liveAnnouncer.textContent = message; }, 100);
+        }
+
+        // FAB Toggle
+        fabToggle.addEventListener('click', function() {
+            const isOpen = panel.classList.contains('open');
+            if (isOpen) {
+                panel.classList.remove('open');
+                fabToggle.setAttribute('aria-expanded', 'false');
+            } else {
+                panel.classList.add('open');
+                fabToggle.setAttribute('aria-expanded', 'true');
+                setTimeout(() => closePanel.focus(), 100);
+            }
+        });
+
+        closePanel.addEventListener('click', function() {
+            panel.classList.remove('open');
+            fabToggle.setAttribute('aria-expanded', 'false');
+            fabToggle.focus();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && panel.classList.contains('open')) {
+                panel.classList.remove('open');
+                fabToggle.setAttribute('aria-expanded', 'false');
+                fabToggle.focus();
+            }
+        });
+
+        // Visual Controls
+        highContrastToggle.addEventListener('change', function() {
+            if (this.checked) {
+                body.classList.add('high-contrast');
+                announce('Mode kontras tinggi diaktifkan');
+            } else {
+                body.classList.remove('high-contrast');
+                announce('Mode kontras tinggi dinonaktifkan');
+            }
+        });
+
+        fontSizeSlider.addEventListener('input', function() {
+            const value = this.value;
+            fontSizeValue.textContent = value + '%';
+            body.classList.remove('font-scale-125', 'font-scale-150', 'font-scale-175', 'font-scale-200');
+            if (value === '125') body.classList.add('font-scale-125');
+            else if (value === '150') body.classList.add('font-scale-150');
+            else if (value === '175') body.classList.add('font-scale-175');
+            else if (value === '200') body.classList.add('font-scale-200');
+        });
+
+        fontSizeSlider.addEventListener('change', function() {
+            announce('Ukuran font ' + this.value + ' persen');
+        });
+
+        focusThickToggle.addEventListener('change', function() {
+            const focusElements = document.querySelectorAll('a, button, input, select, [tabindex]');
+            if (this.checked) {
+                focusElements.forEach(el => { el.classList.remove('focus-pixel'); el.classList.add('focus-pixel-thick'); });
+                announce('Fokus tebal diaktifkan');
+            } else {
+                focusElements.forEach(el => { el.classList.remove('focus-pixel-thick'); el.classList.add('focus-pixel'); });
+                announce('Fokus normal');
+            }
+        });
+
+        reduceMotionToggle.addEventListener('change', function() {
+            if (this.checked) {
+                body.classList.add('reduce-motion');
+                announce('Animasi dikurangi');
+            } else {
+                body.classList.remove('reduce-motion');
+                announce('Animasi aktif');
+            }
+        });
+
+        // TTS Controls
+        ttsRateSlider.addEventListener('input', function() {
+            ttsRateValue.textContent = parseFloat(this.value).toFixed(1) + 'x';
+        });
+
+        ttsReadPage.addEventListener('click', async function() {
+            try {
+                ttsStatus.textContent = '⏳ MENGHUBUNGKAN...';
+                const voice = ttsVoiceSelect.value;
+                const rate = parseFloat(ttsRateSlider.value);
+                
+                await edgeTTS.connect(voice);
+                
+                const textToRead = 'Portal Kampus UIN Sunan Kalijaga. Semester aktif: 1 Ganjil, tahun 2026 sampai 2027. Total SKS diambil: 20 SKS, 6 mata kuliah. Jadwal hari ini: Perancangan Algoritma pukul 7 sampai 9:10, sudah selesai. Matematika Diskrit pukul 10:40 sampai 12:20, sedang berlangsung. Bahasa Indonesia pukul 13:30 sampai 16, belum dimulai. Presensi: kehadiran 85 persen, izin 10 persen, tidak hadir 5 persen.';
+                
+                await edgeTTS.speak(textToRead, rate);
+                announce('Membacakan halaman');
+            } catch (error) {
+                ttsStatus.textContent = '❌ ERROR';
+                ttsStatus.classList.add('error');
+                announce('Gagal membacakan');
+            }
+        });
+
+        ttsReadFocus.addEventListener('click', async function() {
+            try {
+                const voice = ttsVoiceSelect.value;
+                const rate = parseFloat(ttsRateSlider.value);
+                const focused = document.activeElement;
+                
+                let text = '';
+                if (focused && focused !== document.body) {
+                    text = focused.textContent || focused.getAttribute('aria-label') || focused.value || 'Elemen tanpa teks';
+                } else {
+                    text = 'Tidak ada elemen yang difokuskan';
+                }
+                
+                await edgeTTS.connect(voice);
+                await edgeTTS.speak(text, rate);
+                announce('Membacakan: ' + text);
+            } catch (error) {
+                ttsStatus.textContent = '❌ ERROR';
+                ttsStatus.classList.add('error');
+            }
+        });
+
+        ttsStop.addEventListener('click', function() {
+            edgeTTS.stop();
+            announce('TTS dihentikan');
+        });
+
+        // Reset
+        resetButton.addEventListener('click', function() {
+            highContrastToggle.checked = false;
+            body.classList.remove('high-contrast');
+            
+            fontSizeSlider.value = 100;
+            fontSizeValue.textContent = '100%';
+            body.classList.remove('font-scale-125', 'font-scale-150', 'font-scale-175', 'font-scale-200');
+            
+            focusThickToggle.checked = false;
+            const focusElements = document.querySelectorAll('a, button, input, select, [tabindex]');
+            focusElements.forEach(el => { el.classList.remove('focus-pixel-thick'); el.classList.add('focus-pixel'); });
+            
+            reduceMotionToggle.checked = false;
+            body.classList.remove('reduce-motion');
+            
+            ttsRateSlider.value = 1;
+            ttsRateValue.textContent = '1.0x';
+            ttsVoiceSelect.value = 'id-ID-GadisNeural';
+            
+            edgeTTS.stop();
+            
+            announce('Reset ke default');
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.altKey && e.key === 'a') { e.preventDefault(); fabToggle.click(); }
+            if (e.altKey && e.key === 't') { e.preventDefault(); ttsReadPage.click(); }
+            if (e.altKey && e.key === 's') { e.preventDefault(); ttsStop.click(); }
+        });
+    });
+    </script>
+</body>
+</html>
